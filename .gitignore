@@ -1,0 +1,24 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# --- Node / Frontend ---
+node_modules/
+dist/
+build/
+.DS_Store
+
+# --- Data & Model (Terlalu besar untuk GitHub) ---
+# GitHub menolak file > 100MB. Kita exclude folder data.
+data/
+models/*.h5
+*.npy
+*.hdf
+*.nc
+*.nc4
+
+# --- Database ---
+*.db
+*.sqlite3

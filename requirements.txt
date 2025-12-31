@@ -1,0 +1,30 @@
+# --- Backend & API ---
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+requests
+python-multipart
+
+# --- AI & Data Science Core ---
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+
+# --- Deep Learning (TensorFlow) ---
+# Hati-hati, ini ukurannya besar (+- 500MB)
+tensorflow
+
+# --- Google Gemini AI ---
+google-generativeai
+
+# --- Satellite & Climate Data Processing ---
+# Wajib untuk membaca file .nc4, .hdf, dan akses ERA5
+h5py
+netCDF4
+cdsapi
+
+# --- Utilities ---
+python-dotenv
