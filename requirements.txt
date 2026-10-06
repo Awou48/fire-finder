@@ -1,30 +1,33 @@
 # --- Backend & API ---
-fastapi
-uvicorn
-pydantic
-sqlalchemy
-requests
-python-multipart
+fastapi==0.142.2
+uvicorn==0.54.0
+pydantic==2.13.5
+sqlalchemy==2.1.3
+requests==2.34.2
+python-multipart==0.0.32
 
 # --- AI & Data Science Core ---
-numpy
-pandas
-scikit-learn
-matplotlib
-seaborn
+numpy==2.5.3
+pandas==3.0.6
+scikit-learn==1.9.1
+scikit-image==0.26.0
+matplotlib==3.11.2
+seaborn==0.13.2
 
 # --- Deep Learning (TensorFlow) ---
 # Hati-hati, ini ukurannya besar (+- 500MB)
-tensorflow
+# 2.20 dipakai karena google-generativeai butuh protobuf < 6 (TF 2.21 butuh >= 6.31)
+tensorflow==2.20.0
+keras==3.15.1
 
 # --- Google Gemini AI ---
-google-generativeai
+google-generativeai==0.8.6
 
 # --- Satellite & Climate Data Processing ---
 # Wajib untuk membaca file .nc4, .hdf, dan akses ERA5
-h5py
-netCDF4
-cdsapi
+h5py==3.16.0
+netCDF4==1.7.4
+cdsapi==0.7.7
 
 # --- Utilities ---
-python-dotenv
+python-dotenv==1.2.4

@@ -1,14 +1,16 @@
 import os
+from dotenv import load_dotenv
 
-# 1. API KEYS
-OPENWEATHER_API_KEY = "Nasa_pencariapi6"
-GEMINI_API_KEY = "Nasa_pencariapi6"
-
-# 2. KONFIGURASI FILE & MODEL
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
-MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "FireFinder_best_model.h5")
+# 1. API KEYS (isi di file .env, lihat .env.example)
+OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+
+# 2. KONFIGURASI FILE & MODEL
+MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(PROJECT_ROOT, "models", "FireFinder_best_model.h5"))
 DATA_PATH = os.path.join(PROJECT_ROOT, "data", "processed", "X_TRAIN_GRID.npy")
 LABEL_PATH = os.path.join(PROJECT_ROOT, "data", "processed", "Y_TRAIN_GRID.npy")
 

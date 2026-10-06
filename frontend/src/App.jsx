@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { AlertTriangle, Activity, Calendar, Flame, Thermometer, Wind, Radio, CloudRain, Plane, History, X, FileText } from 'lucide-react'
 import L from 'leaflet';
 import EvaluationModal from './components/EvaluationModal'
+import { API_URL } from './config'
 
 const getCustomIcon = (color) => {
   let iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
@@ -28,27 +29,27 @@ function App() {
   const fetchData = async (day) => {
     setLoading(true); setMissionPath(null);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/predict/future?days=${day}`)
+      const response = await axios.get(`${API_URL}/predict/future?days=${day}`)
       setData(response.data); setLoading(false)
     } catch (error) { console.error(error); setLoading(false) }
   }
 
   const fetchHistory = async () => {
-    try { const res = await axios.get('http://127.0.0.1:8000/history?limit=15'); setHistoryLogs(res.data); setShowHistoryModal(true) } catch { alert("Gagal DB") }
+    try { const res = await axios.get(`${API_URL}/history?limit=15`); setHistoryLogs(res.data); setShowHistoryModal(true) } catch { alert("Gagal DB") }
   }
 
   const calculateMission = async (lat, lon) => {
     setMissionPath(null);
     try {
-      const res = await axios.post('http://127.0.0.1:8000/calculate-mission', { target_lat: lat, target_lon: lon })
+      const res = await axios.post(`${API_URL}/calculate-mission`, { target_lat: lat, target_lon: lon })
       if (res.data && res.data.source && res.data.target) setMissionPath(res.data)
     } catch { alert("Gagal Rute") }
   }
 
   const askAIAdvisor = async () => {
     if (!data) return; setAdvisorLoading(true);
-    const summary = `Status ${data.status_summary}, Total ${data.total_hotspots} Hotspot.`;
-    try { const res = await axios.post('http://127.0.0.1:8000/ask-advisor', { summary_text: summary }); setAdvisorReply(res.data.reply); } 
+    const summary = `Status ${data.status_summary}, Total ${data.hotspots?.length ?? 0} Hotspot.`;
+    try { const res = await axios.post(`${API_URL}/ask-advisor`, { summary_text: summary }); setAdvisorReply(res.data.reply); } 
     catch { setAdvisorReply("Gagal AI."); } finally { setAdvisorLoading(false); }
   };
 

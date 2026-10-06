@@ -1,4 +1,5 @@
 import { X, Activity } from 'lucide-react'
+import { API_URL } from '../config'
 
 const EvaluationModal = ({ onClose }) => {
   return (
@@ -11,7 +12,7 @@ const EvaluationModal = ({ onClose }) => {
           <button onClick={onClose} className="text-slate-400 hover:text-red-500 transition-colors bg-slate-700/50 p-1 rounded-full"><X size={20} /></button>
         </div>
         <div className="bg-white p-2 rounded-xl shadow-inner w-full flex justify-center min-h-[300px] items-center">
-            <img src="http://127.0.0.1:8000/performance/matrix" alt="Loading Matrix..." className="rounded max-h-[400px] object-contain"
+            <img src={`${API_URL}/performance/matrix`} alt="Loading Matrix..." className="rounded max-h-[400px] object-contain"
                 onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerHTML = '<span class="text-red-500 text-sm font-bold">Gagal memuat grafik. Cek Backend.</span>'; }} />
         </div>
         <div className="mt-4 bg-slate-900/50 p-3 rounded-lg border border-slate-700 w-full">

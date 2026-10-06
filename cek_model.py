@@ -1,9 +1,7 @@
 import google.generativeai as genai
+from api.config import GEMINI_API_KEY
 
-# TEMPEL API KEY ANDA DISINI
-API_KEY = "AIzaSyCcZUHZzAQR5RTz_vHAUFSSG2Gh8--x-l0"
-
-genai.configure(api_key=API_KEY)
+genai.configure(api_key=GEMINI_API_KEY)
 
 print("Mencari model yang tersedia...")
 try:

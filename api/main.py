@@ -4,6 +4,7 @@ import numpy as np
 import google.generativeai as genai
 from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from tensorflow.keras.models import load_model
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -25,7 +26,7 @@ app.add_middleware(
 
 # Setup Gemini
 llm_model = None
-if "ISI_API_KEY" not in GEMINI_API_KEY:
+if GEMINI_API_KEY:
     try:
         genai.configure(api_key=GEMINI_API_KEY)
         llm_model = genai.GenerativeModel('gemini-2.5-flash')
@@ -53,11 +54,11 @@ async def startup():
             sums = np.sum(y_all, axis=(1, 2, 3))
             fire_indices = np.where(sums > 0)[0].tolist()
             print(f"✅ DATA READY: {len(fire_indices)} samples")
-        except: pass
+        except Exception as e: print(f"❌ DATA ERROR: {e}")
 
 @app.get("/predict/future")
 def predict_future(days: int = Query(1), db: Session = Depends(get_db)):
-    if model is None: raise HTTPException(503, "Loading...")
+    if model is None or not fire_indices: raise HTTPException(503, "Model/data belum dimuat")
     try:
         num_points = random.randint(3, 6)
         daily_hotspots = []
@@ -114,7 +115,6 @@ class RouteRequest(BaseModel):
 
 @app.post("/calculate-mission")
 async def calculate_mission(payload: RouteRequest):
-    print(f"\n📡 DEBUG MISI: Target Lat={payload.target_lat}, Lon={payload.target_lon}")
     if not FIRE_STATIONS: raise HTTPException(500, "DB Pos Kosong")
     nearest, min_dist_sq = None, float('inf')
     for s in FIRE_STATIONS:
@@ -123,7 +123,7 @@ async def calculate_mission(payload: RouteRequest):
     
     if nearest:
         dist_km = (min_dist_sq**0.5)*111
-        return {"source": nearest, "target": payload, "distance_km": round(dist_km, 2), "eta_minutes": int((dist_km/150)*60)}
+        return {"source": nearest, "target": {"lat": payload.target_lat, "lon": payload.target_lon}, "distance_km": round(dist_km, 2), "eta_minutes": int((dist_km/150)*60)}
     raise HTTPException(404, "Pos not found")
 
 class AdvisorPayload(BaseModel):
@@ -136,3 +136,8 @@ async def ask_advisor(payload: AdvisorPayload):
         res = llm_model.generate_content(f"Komandan AI, Situasi: {payload.summary_text}. Instruksi taktis militer singkat:")
         return {"reply": res.text}
     except Exception as e: return {"reply": str(e)}
+
+# Hasil `npm run build` ikut disajikan dari backend (dipakai saat deploy satu container)
+FRONTEND_DIST = os.path.join(PROJECT_ROOT, "frontend", "dist")
+if os.path.isdir(FRONTEND_DIST):
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")

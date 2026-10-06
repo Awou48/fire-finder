@@ -23,7 +23,7 @@ def get_kalimantan_region(lat, lon):
 
 def get_real_weather(lat, lon):
     try:
-        if "ISI_API_KEY" in OPENWEATHER_API_KEY: raise Exception("No Key")
+        if not OPENWEATHER_API_KEY: raise Exception("No Key")
         url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}&units=metric"
         resp = requests.get(url, timeout=3)
         if resp.status_code == 200:
