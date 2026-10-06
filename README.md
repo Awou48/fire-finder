@@ -128,4 +128,4 @@ docker run -p 7860:7860 --env-file .env firefinder
 
 ## Team
 
-Team project for an Artificial Intelligence course. Marcel ([@Awou48](https://github.com/Awou48)) implemented most of the code: model training, the FastAPI backend and the interactive map. Teammates contributed to the overall project.
+This repository houses our group's Artificial Intelligence course project. My specific technical contributions (@Awou48) included the FastAPI backend architecture, training the machine learning models, and building the interactive map interface, while my teammates drove the overall project execution. I welcome any of my teammates to use this repository for their portfolios!
